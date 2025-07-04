@@ -1,7 +1,14 @@
+import * as assert from 'node:assert'
 import { readFile, writeFile } from 'node:fs/promises'
 import { OpenAI } from 'openai'
 import * as dotenv from 'dotenv'
-import { testPlanPrompt, designTestPrompt } from './prompts/index.js'
+import { 
+  testPlanPrompt, 
+  designTestPrompt, 
+  testDefectPrompt, 
+  testCodeGenPrompt,
+  codeGenPrompt,
+} from './prompts/index.js'
 
 dotenv.config({override:true})
 
@@ -19,10 +26,14 @@ async function get_completion(prompt) {
 }
 
 async function main() {
-  const pdrContent = await readFile('./pdr.md')
-  const prompt = designTestPrompt.replace('__PDR__', pdrContent)
+  const content = await readFile('./pdr.md')
+  const prompt = codeGenPrompt.replace('__PDR__', content)
 
-  await writeFile('./test_cases.md', await get_completion(prompt))
+  console.log(await get_completion(prompt))
+
+  
+
+  
 
 }
 
